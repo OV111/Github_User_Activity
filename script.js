@@ -10,24 +10,22 @@ if(!userName) {
     console.error("Pls Provide GitHub Username!")
     process.exit(1)
 }
-
 const fetchUserProfile = async (user) => {
-    let url = `https://api.github.com/users/${user}`
+    const url = `https://api.github.com/users/${user}`
     try {
         const result = await fetch(url)
         if(result.status === 404) {
             throw new Error(`User ${user} not found!`)
         }
         const repos = await result.json()
-        // console.log(repos)
         return repos
     } catch(err) {
-        console.error(`Error: ${err.message}`)
+        console.error(`❌Error: ${err.message}`)
         process.exit(1)
     } 
 }
 const formatRepo = (repository) => {
-    console.log([
+    return [
         `🧑 GitHub User: ${repository.login}`,
         `📛 Name: ${repository.name}`,
         `📌 Bio: ${repository.bio}`,
@@ -39,21 +37,11 @@ const formatRepo = (repository) => {
         `🫂 Following: ${repository.following}`,
         `📅 Created: ${repository.created_at}`,
         `🔗 Profile: ${repository.html_url}`,
-    ].join("\n"))
+    ].join("\n")
 }
-
-// const displayRepoData = (repos) => {
-//     // repos.forEach((repo) => {
-//     //     cosnole.log(formatRepo(repo))
-//     // });
-    
-// console.log(formatRepo(repos))
-// }
-
 (async () => {
     let repo = await fetchUserProfile(userName)
-// console.log(repo)
-    formatRepo(repo)
+    console.log(formatRepo(repo))
 })()
 
 
